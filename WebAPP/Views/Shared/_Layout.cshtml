@@ -1,0 +1,291 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewData["title"]- Admin Areas</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/css/prettyPhoto.css" rel="stylesheet">
+    <link href="~/css/price-range.css" rel="stylesheet">
+    <link href="~/css/animate.css" rel="stylesheet">
+    <link href="~/css/main.css" rel="stylesheet">
+    <link href="~/css/responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.13.3/dist/sweetalert2.min.css
+" rel="stylesheet">
+    <link href="//cdn.datatables.net/2.1.5/css/dataTables.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.dataTables.css" rel="stylesheet">
+
+
+
+
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="images/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+
+</head><!--/head-->
+
+<style>
+    
+    
+
+    /* Custom styles for cart and account buttons */
+    .shop-menu .nav > li > a {
+        color: #333;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 10px 15px;
+        background-color: #F1EFE7;
+        border-radius: 5px;
+        margin: 5px;
+        display: inline-block;
+    }
+
+        .shop-menu .nav > li > a:hover {
+            background-color: #D6D6D0;
+            color: #000;
+        }
+
+    /* Ensure the buttons are next to each other */
+    .shop-menu .nav {
+        display: flex;
+        align-items: center;
+        .navbar
+
+    {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        background-color: #333;
+        overflow: hidden;
+    }
+
+    .navbar li {
+        float: left;
+        position: relative;
+    }
+
+        .navbar li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+            .navbar li a:hover {
+                background-color: #111;
+            }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+
+    .navbar li:hover .dropdown-content {
+        display: block;
+    }
+    }
+
+</style>
+
+<body>
+    <header id="header">
+        <div class="header_top" style="background-color:#D6D6D0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="contactinfo">
+                            <ul class="nav nav-pills">
+                                <li><a href="#"><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
+                                <li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+
+        <div class="header-middle" style="background-color:#F1EFE7">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-sm-4">
+                        <div class="logo">
+                            <a asp-action="Index" asp-controller="Home">
+                                <img src="/images/logonew.png" width="150px" height="150px" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="shop-menu">
+                            <ul class="nav navbar-nav d-flex justify-content-end align-items-center">
+                                <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
+                                @await Component.InvokeAsync("CartSummary")
+                                @if (User.Identity?.IsAuthenticated ?? false)
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-user"></i> Account
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a>
+                                            <a class="dropdown-item" asp-controller="Seller" asp-action="Index">Đăng kí người bán</a>
+                                            <a class="dropdown-item" asp-action="OrderList" asp-controller="Account">Xem các đơn hàng</a>
+                                            <a class="dropdown-item" asp-action="EditProfile" asp-controller="Account">Chỉnh sửa thông tin</a>
+                                        </div>.
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a asp-controller="Account" asp-action="Login">
+                                            <i class="fa fa-lock"></i> Login
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    
+
+    <section>
+        <div class="container">
+            <div class="row">
+                @Html.Partial("_NotificationPartial")
+                @RenderBody()
+            </div>
+        </div>
+
+    </section>
+    <br />
+
+    <footer id="footer">
+        <div class="footer-widget">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="single-widget">
+                            <h2>Service</h2>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="#">Online Help</a></li>
+                                <li><a href="#">Contact Us</a></li>
+                                <li><a href="#">Order Status</a></li>
+                                <li><a href="#">Change Location</a></li>
+                                <li><a href="#">FAQ’s</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="single-widget">
+                            <h2>Quock Shop</h2>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="#">T-Shirt</a></li>
+                                <li><a href="#">Mens</a></li>
+                                <li><a href="#">Womens</a></li>
+                                <li><a href="#">Gift Cards</a></li>
+                                <li><a href="#">Shoes</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="single-widget">
+                            <h2>Policies</h2>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Privecy Policy</a></li>
+                                <li><a href="#">Refund Policy</a></li>
+                                <li><a href="#">Billing System</a></li>
+                                <li><a href="#">Ticket System</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="single-widget">
+                            <h2>About HKTPS</h2>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="#">Company Information</a></li>
+                                <li><a href="#">Careers</a></li>
+                                <li><a href="#">Store Location</a></li>
+                                <li><a href="#">Affillate Program</a></li>
+                                <li><a href="#">Copyright</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-sm-offset-1">
+                        <div class="single-widget">
+                            <h2>About HKTPS</h2>
+                            <form action="#" class="searchform">
+                                <input type="text" placeholder="Your email address" />
+                                <button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
+                                <p>Get the most recent updates from <br />our site and be updated your self...</p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <p class="pull-left">Copyright © 2024 HKTPS Huflit University.</p>
+                    <p class="pull-right">Designed by HKTPS</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/js/jquery.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.scrollUp.min.js"></script>
+    <script src="~/js/price-range.js"></script>
+    <script src="~/js/jquery.prettyPhoto.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.13.3/dist/sweetalert2.all.min.js"></script>
+
+
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/dataTables.buttons.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.print.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

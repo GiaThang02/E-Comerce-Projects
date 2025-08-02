@@ -1,0 +1,163 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="obj\Debug\net6.0\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" />
+    <Compile Include="obj\Debug\net6.0\WebAPP.AssemblyInfo.cs" />
+    <Compile Include="obj\Debug\net6.0\WebAPP.GlobalUsings.g.cs" />
+    <Compile Include="obj\Debug\net6.0\WebAPP.RazorAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="bin\Debug\net6.0\appsettings.Development.json" />
+    <Content Include="bin\Debug\net6.0\appsettings.json" />
+    <Content Include="bin\Debug\net6.0\WebAPP.deps.json" />
+    <Content Include="bin\Debug\net6.0\WebAPP.runtimeconfig.json" />
+    <Content Include="bin\Debug\net6.0\WebAPP.staticwebassets.runtime.json" />
+    <Content Include="obj\Debug\net6.0\scopedcss\Areas\Admin\Views\Shared\_Layout.cshtml.rz.scp.css" />
+    <Content Include="obj\Debug\net6.0\scopedcss\bundle\WebAPP.styles.css" />
+    <Content Include="obj\Debug\net6.0\scopedcss\projectbundle\WebAPP.bundle.scp.css" />
+    <Content Include="obj\Debug\net6.0\staticwebassets.build.json" />
+    <Content Include="obj\Debug\net6.0\staticwebassets.development.json" />
+    <Content Include="obj\Debug\net6.0\staticwebassets.pack.json" />
+    <Content Include="obj\Debug\net6.0\WebAPP.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\project.assets.json" />
+    <Content Include="obj\WebAPP.csproj.nuget.dgspec.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.31" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.31">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="PayPal" Version="1.9.1" />
+    <PackageReference Include="PayPalCheckoutSdk" Version="1.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="obj\Debug\net6.0\scopedcss\Views\Shared\" />
+    <Folder Include="wwwroot\jsback_end\css\" />
+    <Folder Include="wwwroot\jsback_end\images\" />
+    <Folder Include="wwwroot\media\sliders\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Areas\Admin\Views\Brand\Create.cshtml" />
+    <None Include="Areas\Admin\Views\Brand\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Brand\Index.cshtml" />
+    <None Include="Areas\Admin\Views\Category\Create.cshtml" />
+    <None Include="Areas\Admin\Views\Category\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Category\Index.cshtml" />
+    <None Include="Areas\Admin\Views\Order\Delete.cshtml" />
+    <None Include="Areas\Admin\Views\Order\Details.cshtml" />
+    <None Include="Areas\Admin\Views\Order\ViewOrder.cshtml" />
+    <None Include="Areas\Admin\Views\Shared\Error.cshtml" />
+    <None Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <None Include="Areas\Admin\Views\Shared\_NotificationPartial.cshtml" />
+    <None Include="Areas\Admin\Views\Shared\_SidebarPatial.cshtml" />
+    <None Include="Areas\Admin\Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Areas\Admin\Views\_ViewImports.cshtml" />
+    <None Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <None Include="bin\Debug\net6.0\AutoMapper.dll" />
+    <None Include="bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll" />
+    <None Include="bin\Debug\net6.0\Humanizer.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.Data.SqlClient.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.EntityFrameworkCore.SqlServer.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.Identity.Client.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll" />
+    <None Include="bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll" />
+    <None Include="bin\Debug\net6.0\Newtonsoft.Json.dll" />
+    <None Include="bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll" />
+    <None Include="bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll" />
+    <None Include="bin\Debug\net6.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll" />
+    <None Include="bin\Debug\net6.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll" />
+    <None Include="bin\Debug\net6.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll" />
+    <None Include="bin\Debug\net6.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll" />
+    <None Include="bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll" />
+    <None Include="bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll" />
+    <None Include="bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll" />
+    <None Include="bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll" />
+    <None Include="bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll" />
+    <None Include="bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll" />
+    <None Include="bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll" />
+    <None Include="bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll" />
+    <None Include="bin\Debug\net6.0\System.Drawing.Common.dll" />
+    <None Include="bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll" />
+    <None Include="bin\Debug\net6.0\System.Runtime.Caching.dll" />
+    <None Include="bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll" />
+    <None Include="bin\Debug\net6.0\System.Security.Permissions.dll" />
+    <None Include="bin\Debug\net6.0\System.Windows.Extensions.dll" />
+    <None Include="bin\Debug\net6.0\WebAPP.dll" />
+    <None Include="bin\Debug\net6.0\WebAPP.exe" />
+    <None Include="bin\Debug\net6.0\WebAPP.pdb" />
+    <None Include="obj\Debug\net6.0\apphost.exe" />
+    <None Include="obj\Debug\net6.0\project.razor.vs.bin" />
+    <None Include="obj\Debug\net6.0\refint\WebAPP.dll" />
+    <None Include="obj\Debug\net6.0\ref\WebAPP.dll" />
+    <None Include="obj\Debug\net6.0\staticwebassets\msbuild.build.WebAPP.props" />
+    <None Include="obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.WebAPP.props" />
+    <None Include="obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.WebAPP.props" />
+    <None Include="obj\Debug\net6.0\staticwebassets\msbuild.WebAPP.Microsoft.AspNetCore.StaticWebAssets.props" />
+    <None Include="obj\Debug\net6.0\WebAPP.AssemblyInfoInputs.cache" />
+    <None Include="obj\Debug\net6.0\WebAPP.assets.cache" />
+    <None Include="obj\Debug\net6.0\WebAPP.csproj.AssemblyReference.cache" />
+    <None Include="obj\Debug\net6.0\WebAPP.csproj.BuildWithSkipAnalyzers" />
+    <None Include="obj\Debug\net6.0\WebAPP.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\Debug\net6.0\WebAPP.csproj.Up2Date" />
+    <None Include="obj\Debug\net6.0\WebAPP.dll" />
+    <None Include="obj\Debug\net6.0\WebAPP.GeneratedMSBuildEditorConfig.editorconfig" />
+    <None Include="obj\Debug\net6.0\WebAPP.genruntimeconfig.cache" />
+    <None Include="obj\Debug\net6.0\WebAPP.MvcApplicationPartsAssemblyInfo.cache" />
+    <None Include="obj\Debug\net6.0\WebAPP.pdb" />
+    <None Include="obj\Debug\net6.0\WebAPP.RazorAssemblyInfo.cache" />
+    <None Include="obj\project.nuget.cache" />
+    <None Include="obj\WebAPP.csproj.EntityFrameworkCore.targets" />
+    <None Include="obj\WebAPP.csproj.nuget.g.props" />
+    <None Include="obj\WebAPP.csproj.nuget.g.targets" />
+    <None Include="Views\Account\Create.cshtml" />
+    <None Include="Views\Account\Login.cshtml" />
+    <None Include="Views\Cart\Index.cshtml" />
+    <None Include="Views\Checkout\Index.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\NotFound.cshtml" />
+    <None Include="Views\Home\About.cshtml" />
+    <None Include="Views\Product\Details.cshtml" />
+    <None Include="Views\Product\Index.cshtml" />
+    <None Include="Views\Shared\Components\Brands\Default.cshtml" />
+    <None Include="Views\Shared\Components\Categories\Default.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_NotificationPartial.cshtml" />
+    <None Include="Views\Shared\_SidebarPatial.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
+  </ItemGroup>
+
+</Project>

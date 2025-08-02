@@ -1,0 +1,115 @@
+﻿@model IEnumerable<WebAPP.Models.OrderDetails>
+
+@{
+    ViewData["Title"] = "Order Details";
+    decimal total = 0;
+    decimal subtotal = 0;
+}
+
+<h3 class="text-center mt-4">List Order</h3>
+
+<div class="container mt-4">
+    <table class="table table-striped table-hover" id="myTable">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Order Code</th>
+                <th scope="col">Order UserName</th>
+                <th scope="col">Products</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                subtotal = item.Quantity * item.Price;
+                total += subtotal;
+                <tr>
+                    <input type="hidden" asp-for="@item.OrderCode" class="GetIds" />
+                    <td>@item.OrderCode</td>
+                    <td>@item.UserName</td>
+                    <td>@item.ProductId</td>
+                    <td>@item.Price</td>
+                    <td>@item.Quantity</td>
+                    <td>@subtotal.ToString("C")</td>
+                </tr>
+            }
+            <tr>
+
+                <td>Total:</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <select class="form-control select-update-orders">
+                        <option value="#">Trạng thái</option>
+                        <option value="0">Đơn đã xử lý</option>
+                        <option value="1">Đơn mới</option>
+                        <option value="2">Đơn đã hủy</option>
+                    </select>
+
+                </td>
+                <td>@total.ToString("C")</td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.select-update-orders').change(function () {
+                var status = $(this).val(); // status ==1
+                var ordercode = $('.GetIds').val();
+                // Nó sẽ chỉ là hiện thông báo kết quả nhận được của status và ordercode:
+                // alert(ordercode);
+                // alert(status);
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("UpdateOrders")",
+                    data: { status: status, ordercode: ordercode }, 
+                    success: function (result) {
+
+                        if (result.success) {
+
+                            Swal.fire("Cập nhật đơn hàng thành công")
+                        }
+                        else {
+
+                            Swal.fire("Cập nhật đơn hàng thất bại" + result.message)
+                        }
+                    },
+
+                    error: function (req, status, error) {
+                        console.error("Error updating order:", error);
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<style>
+    h3 {
+        margin-bottom: 20px;
+    }
+
+    .table {
+        margin-top: 20px;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .action-buttons a {
+            flex: 1;
+            margin: 0 5px;
+            text-align: center;
+        }
+</style>

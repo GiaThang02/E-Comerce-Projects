@@ -1,0 +1,108 @@
+﻿@{
+    Layout = null;
+}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Người Bán Hàng</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="seller-dashboard">
+        <h1>Chào mừng bạn, người bán hàng</h1>
+        <div class="management-sections">
+            <a href="/quan-li-san-pham" class="management-item">
+                <div class="icon product-icon"></div>
+                <span>Quản lý sản phẩm</span>
+            </a>
+            <a href="/quan-li-don-hang" class="management-item">
+                <div class="icon order-icon"></div>
+                <span>Quản lý đơn hàng</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
+<<style>
+
+    /* Tổng thể của dashboard */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.seller-dashboard {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+}
+
+h1 {
+    color: #333;
+    font-size: 2em;
+    margin-bottom: 30px;
+}
+
+.management-sections {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.management-item {
+    background-color: #007bff;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 20px;
+    border-radius: 10px;
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.management-item:hover {
+    background-color: #0056b3;
+}
+
+.icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+/* Biểu tượng Quản lý sản phẩm */
+.product-icon {
+    background: url('path_to_product_icon.png') no-repeat center center;
+    background-size: contain;
+}
+
+/* Biểu tượng Quản lý đơn hàng */
+.order-icon {
+    background: url('path_to_order_icon.png') no-repeat center center;
+    background-size: contain;
+}
+
+span {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+</style>

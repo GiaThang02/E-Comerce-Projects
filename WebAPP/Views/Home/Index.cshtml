@@ -1,0 +1,283 @@
+﻿@model ProductListViewModel
+
+
+<partial name="_SliderPatical" />
+<div class="col-sm-3">
+    @Html.Partial("_SidebarPatial")
+</div>
+
+<style>
+    .product-image-wrapper {
+        height: 450px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .product-image-wrapper:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+    .single-products {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .productinfo {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text-align: center;
+        padding: 10px;
+    }
+
+        .productinfo a {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+            .productinfo a:hover {
+                color: #FE980F;
+            }
+
+        .productinfo .add-to-cart-wrapper {
+            margin-top: auto;
+        }
+
+    .search-filter-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .search-bar,
+    .price-filter {
+        display: flex;
+        align-items: center;
+    }
+
+        .search-bar form,
+        .price-filter form {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar input,
+        .price-filter input {
+            margin-right: 10px;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+    .btn-animated {
+        position: relative;
+        overflow: hidden;
+        transition: background-color 0.3s, color 0.3s;
+        padding: 5px 10px;
+        border: 1px solid #FE980F;
+        border-radius: 5px;
+        background-color: #fff;
+        color: #FE980F;
+        text-align: center;
+    }
+
+        .btn-animated:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.3s;
+        }
+
+        .btn-animated:hover:after {
+            left: 100%;
+        }
+
+        .btn-animated:hover {
+            background-color: #FE980F;
+            color: #fff;
+        }
+
+        .btn-animated i {
+            margin-right: 5px;
+        }
+
+        .btn-animated:hover i {
+            color: #fff;
+        }
+
+        .btn-animated:hover span {
+            color: #fff;
+        }
+
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type='number'] {
+        -moz-appearance: textfield;
+    }
+
+    .features_items {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+    }
+
+    .title {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .pagination-wrapper {
+        margin-top: 20px;
+    }
+
+    .pagination .page-link {
+        color: #FE980F;
+    }
+
+        .pagination .page-link:hover {
+            background-color: #FE980F;
+            color: #fff;
+        }
+
+    .pagination .active .page-link {
+        background-color: #FE980F;
+        border-color: #FE980F;
+        color: #fff;
+    }
+</style>
+
+<div class="col-sm-9 padding-right">
+    <div class="features_items animate__animated animate__fadeIn">
+        <!--features_items-->
+        <br />
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="title text-center" style="color:#000">Sản Phẩm CAFE Ngon</h2>
+        </div>
+        <div class="search-filter-container">
+            <div class="search-bar">
+                <form asp-action="Index" method="get" class="form-inline">
+                    <div class="input-group">
+                        <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control mr-sm-2" placeholder="Search products..." />
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-success btn-animated">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="price-filter">
+                <form asp-action="Index" method="get" class="form-inline">
+                    <div class="input-group ml-2">
+                        <input type="number" name="minPrice" value="@ViewData["CurrentMinPriceFilter"]" class="form-control mr-sm-2" placeholder="Min price..." />
+                        <input type="number" name="maxPrice" value="@ViewData["CurrentMaxPriceFilter"]" class="form-control mr-sm-2" placeholder="Max price..." />
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-success btn-animated">Filter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br />
+        @foreach (var item in Model.Products)
+        {
+            <div class="col-sm-4">
+                <div class="product-image-wrapper">
+                    <div class="single-products">
+                        <div class="productinfo">
+                            <a asp-action="Details" asp-controller="Product" asp-route-Id="@item.Id">
+                                <img src="~/media/products/@item.Image" alt="@item.Name" width="100%" />
+                                <h2 style="color:#000">@item.Price.ToString("#,##0,VNĐ")</h2>
+                                <p>@item.Name</p>
+                                <p>Danh mục: @item.Category.Name</p>
+                                <p>Thương Hiệu: @item.Brand.Name</p>
+                            </a>
+                            <div class="add-to-cart-wrapper">
+                                @* <a class="btn btn-default add-to-cart btn-animated" asp-action="Add" asp-controller="Cart" asp-route-Id="@item.Id">
+                                </a> *@
+
+                                @if(item.Quantity>1)
+                                {
+                                <button class="btn btn-default add-to-cart" data-product_id="@item.Id">
+                                    <i class="fa fa-shopping-cart"></i><span> Thêm vào giỏ hàng</span>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-default" >
+                                        <i class="fa fa-shopping-cart"></i><span> Hết hàng</span>
+                                    </button>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div><!--features_items-->
+
+    <div class="pagination-wrapper text-center">
+        <ul class="pagination">
+            <li class="page-item @(Model.PagingInfo.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link" asp-action="Index" asp-route-pageIndex="@(Model.PagingInfo.CurrentPage - 1)">Previous</a>
+            </li>
+            @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-pageIndex="@i">@i</a>
+                </li>
+            }
+            <li class="page-item @(Model.PagingInfo.HasNextPage ? "" : "disabled")">
+                <a class="page-link" asp-action="Index" asp-route-pageIndex="@(Model.PagingInfo.CurrentPage + 1)">Next</a>
+            </li>
+        </ul>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.add-to-cart').click(function () {
+                var Id = $(this).data("product_id");
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Add", "Cart")', 
+                    data: { Id:Id },
+                    success: function (result) {
+                        if (result)
+                        {
+                            Swal.fire("Thêm vào giỏ hàng thành công");
+                        }
+                       
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+
+
+ 

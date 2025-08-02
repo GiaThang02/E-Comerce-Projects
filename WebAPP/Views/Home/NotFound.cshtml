@@ -1,0 +1,147 @@
+﻿<style>
+    /* Thêm vào trong <style> của bạn hoặc một tệp CSS riêng */
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa; /* Màu nền nhẹ nhàng */
+        color: #333; /* Màu chữ */
+    }
+
+    h1 {
+        margin-bottom: 30px;
+        color: #007bff; /* Màu tiêu đề */
+    }
+
+    .container {
+        background-color: #ffffff; /* Màu nền của container */
+        border-radius: 8px; /* Bo tròn góc */
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ */
+    }
+
+    /* Kiểu cho các trường nhập */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da; /* Viền nhẹ */
+        border-radius: 5px; /* Bo tròn góc */
+        padding: 10px;
+        transition: border-color 0.2s; /* Hiệu ứng chuyển màu viền */
+    }
+
+        .form-control:focus {
+            border-color: #007bff; /* Màu viền khi focus */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Bóng nhẹ khi focus */
+        }
+
+    /* Kiểu cho bảng sản phẩm */
+    .table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6; /* Viền dưới cho hàng */
+        }
+
+        .table th {
+            background-color: #007bff; /* Màu nền tiêu đề bảng */
+            color: white; /* Màu chữ tiêu đề */
+        }
+
+        .table tr:hover {
+            background-color: #f1f1f1; /* Hiệu ứng hover cho hàng */
+        }
+
+    /* Kiểu cho các nút */
+    .btn {
+        background-color: #007bff; /* Màu nền nút chính */
+        color: white; /* Màu chữ nút */
+        border: none;
+        border-radius: 5px; /* Bo tròn góc nút */
+        padding: 10px 15px;
+        cursor: pointer;
+        transition: background-color 0.2s; /* Hiệu ứng chuyển màu nút */
+    }
+
+        .btn:hover {
+            background-color: #0056b3; /* Màu nền khi hover */
+        }
+
+    /* Kiểu cho các thông báo */
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+</style>
+
+<h1 class="text-center">Đặt Hàng</h1>
+
+<div class="container mt-4">
+    <form asp-action="PlaceOrder" method="post">
+        <div class="form-group">
+            <label for="UserName">Tên người dùng:</label>
+            <input type="text" class="form-control" id="UserName" name="UserName" required>
+        </div>
+        <div class="form-group">
+            <label for="Address">Địa chỉ:</label>
+            <input type="text" class="form-control" id="Address" name="Address" required>
+        </div>
+        <div class="form-group">
+            <label for="PhoneNumber">Số điện thoại:</label>
+            <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber" required>
+        </div>
+
+        <h4>Sản phẩm trong giỏ hàng:</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+        </table>
+
+        <div class="form-group">
+            <label for="CouponCode">Mã giảm giá:</label>
+            <input type="text" class="form-control" id="CouponCode" name="CouponCode">
+        </div>
+        <p><strong>Tổng tiền: </strong>.ToString("#,##0,VNĐ")</p>
+
+
+        <div class="form-group">
+            <label>Phương thức thanh toán:</label><br>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="PaymentMethod" value="COD" id="PaymentMethodCOD" checked>
+                <label class="form-check-label" for="PaymentMethodCOD">Thanh toán khi nhận hàng (COD)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="PaymentMethod" value="PayPal" id="PaymentMethodPayPal">
+                <label class="form-check-label" for="PaymentMethodPayPal">Thanh toán qua PayPal</label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Đặt hàng</button>
+    </form>
+</div>

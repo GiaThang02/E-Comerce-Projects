@@ -1,0 +1,56 @@
+﻿@model IEnumerable<WebAPP.Models.OrderModel>
+
+<h2>Danh sách đơn hàng</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order Code</th>
+            <th>Ngày Tạo</th>
+            <th>Trạng Thái</th>
+            <th>Hành Động</th>
+            <th>Tổng tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderCode</td>
+                <td>@order.CreatedDate.ToString("dd/MM/yyyy")</td>
+                <td>
+                    @if (order.Status == 0)
+                    {
+                        <span class="text-success">Đã xử lý</span>
+                    }
+                    else if (order.Status == 1)
+                    {
+                        <span class="text-info">Đã đang chờ xác nhận</span>
+                    }
+                    else if(order.Status==2)
+                    {
+                        <span class="text-danger">Đã hủy</span>
+                    }
+                    else if (order.Status == 3)
+                    {
+                        <span class="text-danger">Đã nhận được hàng</span>
+                    }
+                    else if (order.Status == 4)
+                    {
+                        <span class="text-danger">Thanh toán thành công</span>
+                    }
+
+                    
+                </td>
+                <td>
+                    <a asp-action="ViewOrder" asp-controller="Account" asp-route-orderCode="@order.OrderCode" class="btn btn-primary">Xem Chi Tiết</a>
+
+                   
+                </td>
+                <td>
+                    @order.GrandTotal.ToString()
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

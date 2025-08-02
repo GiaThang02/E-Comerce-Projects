@@ -1,0 +1,33 @@
+﻿@model WebAPP.Models.ViewModels.CartSummaryViewModel
+
+<style>
+    .hover-button {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        background-color: #F1EFE7;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+        .hover-button:hover {
+            background-color: #D6D6D0; /* Màu nền khi hover */
+            color: #000; /* Màu chữ khi hover */
+        }
+
+    .hover-icon {
+        margin-right: 5px;
+    }
+</style>
+
+<div>
+    <a asp-controller="Cart" asp-action="Index" class="hover-button">
+        <i class="fa fa-shopping-cart hover-icon"></i>
+        : @Model.ItemCount
+    </a>
+</div>

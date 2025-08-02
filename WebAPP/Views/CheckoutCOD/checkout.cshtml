@@ -1,0 +1,189 @@
+﻿@model WebAPP.Models.ViewModels.CartItemViewModel
+
+@{
+    ViewBag.Title = "Thanh Toán";
+}
+
+<h2>Thanh Toán</h2>
+<script src="https://esgoo.net/scripts/jquery.js"></script>
+
+<div class="cart-summary">
+    <h3>Giỏ Hàng Của Bạn</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Sản Phẩm</th>
+                <th>Giá</th>
+                <th>Số Lượng</th>
+                <th>Tổng Cộng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CartItems)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.Image" alt="@item.ProductName" style="width: 50px;" />
+                        @item.ProductName
+                    </td>
+                    <td>@item.Price.ToString("C")</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Total.ToString("C")</td>
+                </tr>
+            }
+            @if (!Model.CartItems.Any())
+            {
+                <tr>
+                    <td colspan="4" class="text-center">
+                        <h4>Giỏ hàng của bạn đang trống</h4>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="shipping-selection">
+        <h4>Chọn Địa Chỉ Giao Hàng</h4>
+        <table class="table">
+            <tr>
+                <td colspan="3">
+                    <div class="form-group">
+                        <label>Chọn Tỉnh Thành</label>
+                        <select class="css_select" id="tinh" name="tinh" title="Chọn Tỉnh Thành">
+                            <option value="0">Tỉnh Thành</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Chọn Quận Huyện</label>
+                        <select class="css_select" id="quan" name="quan" title="Chọn Quận Huyện">
+                            <option value="0">Quận Huyện</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Chọn Phường Xã</label>
+                        <select class="css_select" id="phuong" name="phuong" title="Chọn Phường Xã">
+                            <option value="0">Phường Xã</option>
+                        </select>
+                    </div>
+
+                    <div class="button-group mt-2">
+                        <button type="button" class="btn btn-default btn-add-shipping">Tính phí vận chuyển</button>
+                        <button class="btn btn-danger"><a asp-controller="Cart" asp-action="DeleteShippingCost" style="color:white;">Xóa vận chuyển</a></button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5"></td>
+                <td colspan="2" class="text-right">
+                    @if (!string.IsNullOrEmpty(Model.CouponCode))
+                    {
+                        <p class="grand-total">Phí ship: @Model.ShippingCost.ToString("#,##0,VNĐ")</p>
+                        <p class="grand-total">Giá sau khi giảm: @Model.GrandTotal.ToString("#,##0,VNĐ")</p>
+                    }
+                    else
+                    {
+                        <p class="grand-total">Phí ship: @Model.ShippingCost.ToString("#,##0,VNĐ")</p>
+                        <p class="grand-total">Tổng tiền: @Model.GrandTotal.ToString("#,##0,VNĐ")</p>
+                    }
+
+                    <form asp-controller="Cart" asp-action="ApplyCoupon" method="post" class="form-inline">
+                        <div class="form-group mb-2">
+                            <input type="text" class="form-control" name="couponCode" placeholder="Nhập mã giảm giá">
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Áp dụng mã</button>
+                    </form>
+
+                    @if (TempData["CouponError"] != null)
+                    {
+                        <div class="alert alert-danger mt-2">@TempData["CouponError"]</div>
+                    }
+                    @if (TempData["CouponSuccess"] != null)
+                    {
+                        <div class="alert alert-success mt-2">@TempData["CouponSuccess"]</div>
+                    }
+
+                    <div class="button-group mt-2">
+                        <a class="btn btn-danger btn-sm" asp-controller="Cart" asp-action="Clear">Xóa tất cả</a>
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            @if (Model.ShippingCost <= 0)
+                            {
+                                <a disabled="disabled" class="btn btn-warning btn-sm">Đặt hàng</a>
+                                <span class="text-danger">Yêu cầu tính phí vận chuyển</span>
+                            }
+                            else
+                            {
+                                <a class="btn btn-warning btn-sm" asp-controller="Checkout" asp-action="Checkout">Đặt hàng</a>
+                            }
+                        }
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".btn-add-shipping").click(function () {
+                var tinh = $("#tinh").find("option:selected").text();
+                var quan = $("#quan").find("option:selected").text();
+                var phuong = $("#phuong").find("option:selected").text();
+
+                // Kiểm tra nếu các trường bị bỏ trống
+                if (tinh === '' || quan === '' || phuong === '') {
+                    Swal.fire("Làm ơn không bỏ trống.");
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("GetShipping", "Cart")",
+                        data: { tinh: tinh, quan: quan, phuong: phuong }, // Gửi dữ liệu tới server
+                        success: function (result) {
+                            // Xử lý khi cập nhật thành công
+                            if (result.success) {
+                                location.reload(); // Tải lại trang
+                            }
+                        },
+                    });
+                }
+            });
+
+            // Lấy danh sách tỉnh thành
+            $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
+                if (data_tinh.error == 0) {
+                    $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                        $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+                    });
+                    $("#tinh").change(function (e) {
+                        var idtinh = $(this).val();
+                        // Lấy quận huyện
+                        $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
+                            if (data_quan.error == 0) {
+                                $("#quan").html('<option value="0">Quận Huyện</option>');
+                                $("#phuong").html('<option value="0">Phường Xã</option>');
+                                $.each(data_quan.data, function (key_quan, val_quan) {
+                                    $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
+                                });
+                                // Lấy phường xã
+                                $("#quan").change(function (e) {
+                                    var idquan = $(this).val();
+                                    $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
+                                        if (data_phuong.error == 0) {
+                                            $("#phuong").html('<option value="0">Phường Xã</option>');
+                                            $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                                $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
+                                            });
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+}

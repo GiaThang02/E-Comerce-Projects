@@ -1,0 +1,229 @@
+﻿@model WebAPP.Models.ViewModels.OrderViewModel
+    @using System.Globalization
+
+
+<h1 class="text-center">Đặt Hàng</h1>
+    @using System.Globalization
+
+<div class="container mt-4">
+        <div class="form-group">
+            <label for="UserName">Tên người dùng:</label>
+            <input type="text" class="form-control" id="UserName" name="UserName" value="@Model.UserName" required>
+        </div>
+        <div class="form-group">
+            <label for="Name">Tên:</label>
+            <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required>
+        </div>
+        <div class="form-group">
+            <label for="Address">Địa chỉ:</label>
+            <input type="text" class="form-control" id="Address" name="Address" value="@Model.Address" required>
+        </div>
+        <div class="form-group">
+            <label for="PhoneNumber">Số điện thoại:</label>
+            <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" required>
+        </div>
+
+        <h4>Sản phẩm trong giỏ hàng:</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                    <th>Tổng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Products)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.Quantity</td>
+                    <td>@item.Price.ToString("N0", new CultureInfo("vi-VN")) VNĐ</td>
+                    <td>@((item.Quantity * item.Price).ToString("N0", new CultureInfo("vi-VN"))) VNĐ</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        <tr>
+            <td colspan="7">
+
+                <div class="form-group">
+                    <label>Chọn</label>
+                    <select class="css_select" id="tinh" name="tinh" title="Chọn Tỉnh Thành">
+                        <option value="0">Tỉnh Thành</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Chọn</label>
+                    <select class="css_select" id="quan" name="quan" title="Chọn Quận Huyện">
+                        <option value="0">Quận Huyện</option>
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+                    <label>Chọn</label>
+                    <select class="css_select" id="phuong" name="phuong" title="Chọn Phường Xã">
+                        <option value="0">Phường Xã</option>
+                    </select>
+                </div>
+            <button><a asp-controller="CheckOutOrder" asp-action="DeleteShippingCost">Xóa vận chuyển</a></button>
+
+            </td>
+        </tr>
+    <form id="applyCouponForm" method="post" class="form-inline">
+        <div class="form-group mb-2">
+            <input type="text" class="form-control" name="couponCode" placeholder="Enter coupon code" required>
+        </div>
+        <div class="form-group mb-2 mt-2">
+            <button type="submit" class="btn btn-primary mb-2">Apply Coupon</button>
+        </div>
+    </form>
+
+    <div id="couponMessage"></div>
+    <p><strong>Phí vận chuyển: </strong><span class="shipping-cost">@Model.ShippingCost.ToString("#,##0,VNĐ")</span></p>
+
+    <p><strong>Tổng tiền: </strong><span id="grand-total">@Model.GrandTotal.ToString("N0", new CultureInfo("vi-VN")) VNĐ</span></p>
+
+
+     
+    
+        <div class="button-group mt-2">
+            @if (User.Identity?.IsAuthenticated ?? false)
+            {
+
+
+            <form method="post" action="@Url.Action("Checkout", "CheckOutOrder")">
+                <div class="form-group">
+                    <label>Phương thức thanh toán:</label><br>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="PaymentMethod" value="COD" id="PaymentMethodCOD" checked>
+                        <label class="form-check-label" for="PaymentMethodCOD">Thanh toán khi nhận hàng (COD)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="PaymentMethod" value="PayPal" id="PaymentMethodPayPal">
+                        <label class="form-check-label" for="PaymentMethodPayPal">Thanh toán qua PayPal</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Thanh toán</button>
+            </form>
+
+            }
+        </div>
+
+
+</div>
+
+
+@section Scripts {
+
+
+
+    <script>
+        $(document).ready(function () {
+            // Hàm cập nhật giá trị phí vận chuyển và tổng tiền
+            function updateTotals(response) {
+                if (response.success) {
+                    $(".shipping-cost").text(response.shippingPrice.toLocaleString('vi-VN') + " VNĐ");
+                    $("#grand-total").text(response.grandTotal.toLocaleString("vi-VN") + " VNĐ");
+                } else {
+                    Swal.fire("Lỗi: " + response.message);
+                }
+            }
+
+            // Lắng nghe sự kiện thay đổi trên dropdown
+            $("#tinh, #quan, #phuong").change(function () {
+                var tinh = $("#tinh").find("option:selected").text();
+                var quan = $("#quan").find("option:selected").text();
+                var phuong = $("#phuong").find("option:selected").text();
+
+                // Kiểm tra xem các giá trị đã được chọn hay chưa
+                if (tinh !== 'Tỉnh Thành' && quan !== 'Quận Huyện' && phuong !== 'Phường Xã') {
+                    $.ajax({
+                        type: "POST",
+                        url: "/CheckOutOrder/GetShipping",
+                        data: { tinh: tinh, quan: quan, phuong: phuong },
+                        success: function (response) {
+                            // Cập nhật phí vận chuyển và tổng tiền sau khi thay đổi địa chỉ
+                            updateTotals(response);
+                        },
+                        error: function () {
+                            Swal.fire("Đã có lỗi xảy ra, vui lòng thử lại.");
+                        }
+                    });
+                }
+            });
+
+            // Xử lý áp dụng mã giảm giá
+            $('#applyCouponForm').submit(function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+                $.ajax({
+                    url: '@Url.Action("ApplyCoupon", "CheckOutOrder")', // Đường dẫn đến action
+                    type: 'POST',
+                    data: $(this).serialize(), // Lấy dữ liệu từ form
+                    success: function (response) {
+                        if (response.success) {
+                            updateTotals(response);
+                        } else {
+                            $('#couponMessage').text(response.message);
+                        }
+                    },
+                    error: function () {
+                        $('#couponMessage').text('Có lỗi xảy ra. Vui lòng thử lại.');
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+
+
+
+        $(document).ready(function () {
+            $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
+                if (data_tinh.error == 0) {
+                    $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                        $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+                    });
+                    $("#tinh").change(function (e) {
+                        var idtinh = $(this).val();
+                        //Lấy quận huyện
+                        $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
+                            if (data_quan.error == 0) {
+                                $("#quan").html('<option value="0">Quận Huyện</option>');
+                                $("#phuong").html('<option value="0">Phường Xã</option>');
+                                $.each(data_quan.data, function (key_quan, val_quan) {
+                                    $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
+                                });
+                                //Lấy phường xã
+                                $("#quan").change(function (e) {
+                                    var idquan = $(this).val();
+                                    $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
+                                        if (data_phuong.error == 0) {
+                                            $("#phuong").html('<option value="0">Phường Xã</option>');
+                                            $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                                $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
+                                            });
+                                        }
+                                    });
+                                });
+
+                            }
+                        });
+                    });
+
+                }
+            });
+        });
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+}

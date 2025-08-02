@@ -1,0 +1,76 @@
+﻿@model IEnumerable<ProductModel>
+
+<div class="col-sm-3">
+    @Html.Partial("_SidebarPatial")
+</div>
+<style>
+    .product-image-wrapper {
+        height: 450px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-bottom: 20px; 
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .product-image-wrapper:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+    .single-products {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .productinfo {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text-align: center;
+    }
+
+        .productinfo a {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .productinfo .add-to-cart-wrapper {
+            margin-top: auto;
+        }
+
+    }
+</style>
+<div class="col-sm-9 padding-right">
+    <div class="features_items">
+        <!--features_items-->
+        <h2 class="title text-center">Sản Phẩm CAFE Ngon</h2>
+
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-4">
+                <div class="product-image-wrapper">
+                    <div class="single-products">
+                        <div class="productinfo">
+                            <a asp-action="Details" asp-controller="Product" asp-route-Id="@item.Id">
+                                <img src="~/media/sliders/@item.Image" alt="@item.Name" width="100%" />
+                                <h2>$@item.Price</h2>
+                                <p>@item.Name</p>
+                                <p>Danh mục: @item.Category.Name</p>
+                            </a>
+                            <div class="add-to-cart-wrapper">
+                                <a class="btn btn-default add-to-cart" asp-action="Add" asp-controller="Cart" asp-route-Id="@item.Id">
+                                    <i class="fa fa-shopping-cart"></i>Add to cart
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>

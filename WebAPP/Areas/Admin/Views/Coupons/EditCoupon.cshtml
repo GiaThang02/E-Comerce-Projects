@@ -1,0 +1,48 @@
+﻿@model WebAPP.Models.Repository.Coupon
+
+<h2 class="text-center mt-4">Edit Coupon</h2>
+<div class="container mt-4">
+    <div class="col-md-6 mx-auto">
+        <form asp-action="EditCoupon" method="post" class="mt-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="form-group">
+                <label asp-for="Code"></label>
+                <input asp-for="Code" class="form-control" readonly />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DiscountPercentage"></label>
+                <input asp-for="DiscountPercentage" class="form-control" />
+                <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ExpirationDate"></label>
+                <input asp-for="ExpirationDate" class="form-control" />
+                <span asp-validation-for="ExpirationDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                <label asp-for="IsActive" class="form-check-label"></label>
+                <span asp-validation-for="IsActive" class="text-danger"></span>
+            </div>
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-success">Save Changes</button>
+            </div>
+        </form>
+
+        <div class="text-center mt-3">
+            <a href="@Url.Action("CouponList")" class="btn btn-secondary text-white">Back to List</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

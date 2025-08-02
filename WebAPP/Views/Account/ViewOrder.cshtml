@@ -1,0 +1,83 @@
+﻿@model IEnumerable<OrderDetails>
+
+@{
+    ViewData["Title"] = "Order Details";
+    decimal total = 0;
+    decimal subtotal = 0;
+}
+<h2>Chi tiết đơn hàng</h2>
+
+<table class="table" id="myTable">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Hình ảnh</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Tổng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            subtotal = item.Quantity * item.Price;
+            total += subtotal;
+            <tr>
+                <input type="hidden" asp-for="@item.OrderCode" />
+                <td>@item.Products.Name</td>
+                <td><img src="~/media/products/@item.Products.Image" width="100" height="100" class="img-thumbnail" /></td>
+                <td>@item.Price.ToString("C")</td>
+                <td>@item.Quantity</td>
+                <td>@item.GrandTotal.ToString("C")</td>
+            </tr>
+        }
+        <tr>
+            <td></td
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Shipping cost: @ViewBag.ShippingCost.ToString("C")</td>
+        </tr>
+        <tr>
+            <td>Total:</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Tổng tiền: @ViewBag.GrandTotal.ToString("C")</td>
+
+        </tr>
+
+
+        <tr>
+            <td><a asp-action="OrderList" asp-controller="Account">Quay lại</a></td>
+            <td></td>
+            <td></td>
+            <td></td>
+
+            <td>
+                @if (ViewBag.OrderStatus == 0)
+                {
+                    <form asp-action="ConfirmOrder" asp-controller="Account" method="post" style="display:inline;">
+                        <input type="hidden" name="orderCode" value="@Model.FirstOrDefault()?.OrderCode" />
+                        <button type="submit" class="btn btn-success">Xác Nhận Đã Nhận Hàng</button>
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="ConfirmOrder" asp-controller="Account" method="post" style="display:inline;">
+                        <input type="hidden" name="orderCode" value="@Model.FirstOrDefault()?.OrderCode" />
+                        <button type="submit" class="btn btn-success">Xác Nhận Đã Nhận Hàng</button>
+                    </form>
+
+                    <form asp-action="CancelOrder" asp-controller="Account" method="post" style="display:inline;">
+                        <input type="hidden" name="orderCode" value="@Model.FirstOrDefault()?.OrderCode" />
+                        <button type="submit" class="btn btn-danger">Hủy</button>
+                    </form>
+                }
+            </td>
+        </tr>
+
+        
+    </tbody>
+</table>

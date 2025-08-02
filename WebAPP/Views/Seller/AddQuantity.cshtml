@@ -1,0 +1,106 @@
+﻿@model ProductQuantityModel
+@{
+    ViewData["Title"] = "Create ProductQuantity";
+    var total_quantities = 0;
+    var key = 1;
+}
+<h3 class="text-center mt-4">Create Quantity</h3>
+<div class="container mt-4" id="abc">
+    <div class="col-md-6 mx-auto">
+        <form asp-action="StoreProductQuantity" asp-controller="Seller" enctype="multipart/form-data">
+
+            <input type="hidden" name="ProductId" value="@ViewBag.Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="form-group">
+                <label>Quantity</label>
+                <input min="1" value="1" asp-for="Quantity" class="form-control" id="Name" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-success">Create</button>
+            </div>
+        </form>
+
+        <h3>Existing Product Quantities</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Quantity Added</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var productquantity in ViewBag.ProductByQuantity)
+                {
+                    total_quantities += productquantity.Quantity;
+                    <tr>
+                        <td>@key</td>
+                        <td>@productquantity.Quantity</td>
+                        <td>@productquantity.DateCreated</td>
+                    </tr>
+                    key++;
+                }
+                <tr>
+                    <td>Total Quantities: @total_quantities</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+        <div class="text-center mt-3">
+            <a asp-action="Index" asp-controller="Product" class="btn btn-secondary" style="color:white">Back To List Product</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+<style>
+    h3 {
+        margin-bottom: 20px;
+    }
+
+    .container {
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        margin: 0 5px;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+    .btn-secondary {
+        background-color: #218838;
+        border-color: #218838;
+    }
+
+        .btn-secondary:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+</style>

@@ -1,0 +1,208 @@
+﻿@model ShippingModel
+@{
+    ViewData["Title"] = "Create Shipping";
+}
+<script src="https://esgoo.net/scripts/jquery.js"></script>
+
+
+<
+<h3 class="text-center mt-4">Create Shipping</h3>
+<div class="container mt-4">
+    <div class="col-md-6 mx-auto">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="form-group">
+                    <label>Chọn</label>
+                    <select class="css_select" id="tinh" name="tinh" title="Chọn Tỉnh Thành">
+                        <option value="0">Tỉnh Thành</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label >Chọn</label>
+                    <select class="css_select" id="quan" name="quan" title="Chọn Quận Huyện">
+                        <option value="0">Quận Huyện</option>
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+                    <label>Chọn</label>
+                    <select class="css_select" id="phuong" name="phuong" title="Chọn Phường Xã">
+                        <option value="0">Phường Xã</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Giá</label>
+                    <input asp-for="Price" class="form-control" id="price-shipping" />
+
+                </div>
+            <div class="form-group text-center">
+            <button type="button" class="btn btn-success btn-add-shipping">Tạo</button>
+            </div>
+      
+
+        <div class="text-center mt-3">
+            <a asp-action="Index" asp-controller="Shipping" class="btn btn-secondary btn-add-shipping" style="color:white">Back To List Shipping</a>
+        </div>
+
+        <h2>Shipping List</h2>
+        <table class="table table-striped" id="myTable">
+            <thead>
+                <tr>
+                    <th>City</th>
+                    <th>District</th>
+                    <th>Ward</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var shipping in ViewBag.Shippings)
+                {
+                    <tr>
+                        <td>@shipping.City</td>
+                        <td>@shipping.District</td>
+                        <td>@shipping.Ward</td>
+                        <td>@shipping.Price.ToString("#,##0 VNĐ")</td>
+                        <td>
+                            <a onclick="return confirm('Bạn có muốn xóa không ?')" href="@Url.Action("Delete", "Shipping", new { id = shipping.Id })" class="btn">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+    
+<style>
+    h3 {
+        margin-bottom: 20px;
+    }
+
+    .container {
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        margin: 0 5px;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+    .btn-secondary {
+        background-color: #218838;
+        border-color: #218838;
+    }
+
+        .btn-secondary:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+
+   
+    }
+</style>
+
+
+<script>
+
+        $(document).ready(function () {
+            $(".btn-add-shipping").click(function () {
+                var tinh = $("#tinh").find("option:selected").text();
+                var quan = $("#quan").find("option:selected").text();
+                var phuong = $("#phuong").find("option:selected").text();
+                var price = $("#price-shipping").val();
+
+                // Kiểm tra nếu các trường bị bỏ trống
+                if (tinh === '' || quan === '' || phuong === '' || price === '') {
+                    Swal.fire("Làm ơn không bỏ trống.");
+                } else {
+                    // Gửi dữ liệu đến server thông qua AJAX
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("StoreShipping", "Shipping")",
+                        data: { tinh: tinh, quan: quan, phuong: phuong, price: price }, // Gửi dữ liệu tới server
+                        success: function (result) {
+                            // Xử lý khi cập nhật thành công
+                            if (result.success) {
+                                Swal.fire("Thêm vận chuyển thành công. Tải lại trang để thấy dữ liệu.");
+                                // Tải lại trang hoặc cập nhật giao diện nếu cần
+                                location.reload(); // Tải lại trang
+                            } else if (result.duplicate) {
+                                Swal.fire("Dữ liệu trùng lặp.");
+                            } else {
+                                Swal.fire("Có lỗi xảy ra. Vui lòng thử lại sau.");
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            // Xử lý lỗi nếu yêu cầu AJAX thất bại
+                            Swal.fire("Có lỗi xảy ra: " + error);
+                        }
+                    });
+                }
+            });
+        });
+
+    $(document).ready(function () {
+        $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
+            if (data_tinh.error == 0) {
+                $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                    $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+                });
+                $("#tinh").change(function (e) {
+                    var idtinh = $(this).val();
+                    //Lấy quận huyện
+                    $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
+                        if (data_quan.error == 0) {
+                            $("#quan").html('<option value="0">Quận Huyện</option>');
+                            $("#phuong").html('<option value="0">Phường Xã</option>');
+                            $.each(data_quan.data, function (key_quan, val_quan) {
+                                $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
+                            });
+                            //Lấy phường xã
+                            $("#quan").change(function (e) {
+                                var idquan = $(this).val();
+                                $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
+                                    if (data_phuong.error == 0) {
+                                        $("#phuong").html('<option value="0">Phường Xã</option>');
+                                        $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                            $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
+                                        });
+                                    }
+                                });
+                            });
+
+                        }
+                    });
+                });
+
+            }
+        });
+    });
+</script>
